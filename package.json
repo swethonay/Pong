@@ -1,15 +1,19 @@
 {
-  "name": "project-pong",
+  "name": "pong",
   "version": "1.0.0",
   "description": "The classic arcade game Pong in an Electron app.",
   "main": "dist/app.js",
   "scripts": {
+    "bundle-app": "babel ./build/app.js -o ./dist/app.js",
     "bundle": "babel ./build -d dist",
+
     "min-app": "uglifyjs ./dist/app.js -o ./dist/app.js",
     "min-declaration": "uglifyjs ./dist/declaration.js -o ./dist/declaration.js",
     "min-main": "uglifyjs ./dist/main.js -o ./dist/main.js",
-    "build": "run-s bundle min-app min-declaration min-main start",
-    "start": "electron ."
+
+    "build": "run-s bundle-all min-app min-declaration min-main start",
+    "app": "electron .",
+    "start": "run-s bundle-app min-app app"
   },
   "author": "swethonay",
   "license": "ISC",

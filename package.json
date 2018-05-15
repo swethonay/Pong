@@ -11,7 +11,7 @@
     "min-declaration": "uglifyjs ./dist/declaration.js -o ./dist/declaration.js",
     "min-main": "uglifyjs ./dist/main.js -o ./dist/main.js",
 
-    "build": "run-s bundle-all min-app min-declaration min-main start",
+    "build": "run-s bundle min-app min-declaration min-main app",
     "app": "electron .",
     "start": "run-s bundle-app min-app app"
   },

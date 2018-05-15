@@ -23,13 +23,17 @@ const update = () => {
 	if (ball.y-ball.r <= 0 || ball.y+ball.r >= height) { ball.ratio.dy *= -1; }
 
 	// If the ball gets out of screen
-	if (ball.x-ball.r < 0 || ball.x+ball.r > width) {
+	if ((ball.x-ball.r < 0 || ball.x+ball.r > width) && !ball.lost) {
+		// Determines whos the point goes to
 		(ball.x-ball.r < 0 ? bot : player).points++;
 
+		// Check if anyone has won yet
 		if (bot.points > props.goal || player.points > props.goal) {
 			props.winner = bot.points > player.points ? bot : player;
 		}
 
+		// Reset the ball
+		ball.lost = true;
 		ball.reset();
 	}
 

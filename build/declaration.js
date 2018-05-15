@@ -17,12 +17,25 @@ export const ball = {
 	get dx() { return width*this.ratio.dx; },
 	get dy() { return height*this.ratio.dy; },
 	get r() { return Math.min(width, height)*this.ratio.r; },
+	lost: false,
 	reset() {
+		// Places ball back into the center with no velocity
 		this.ratio.x = this.ratio.y = 0.5;
-		this.ratio.dx = random(this.ratio.max);
-		this.ratio.dy = random(this.ratio.max);
-		this.ratio.dx += this.ratio.dx < 0 ? -this.ratio.min : this.ratio.min;
-		this.ratio.dy += this.ratio.dy < 0 ? -this.ratio.min : this.ratio.min;
+		this.ratio.dx = this.ratio.dy = 0;
+
+		// ~1s delay
+		setTimeout(() => {
+			// Random `x` and `y` velocities
+			this.ratio.dx = random(this.ratio.max);
+			this.ratio.dy = random(this.ratio.max);
+
+			// Prevent from the `dx` and `dy` being lower than the minimal velocity
+			this.ratio.dx += this.ratio.dx < 0 ? -this.ratio.min : this.ratio.min;
+			this.ratio.dy += this.ratio.dy < 0 ? -this.ratio.min : this.ratio.min;
+
+			// The game is ready to play again
+			this.lost = false;
+		}, 1000);
 	},
 	ratio: {
 		x: 0.5, y: 0.5,
@@ -118,9 +131,10 @@ export const collides = (x, y) => {
 };
 
 export const keydown = E => {
-	if (E.code === 'Space') {
+	if (E.code === 'Space' && !ball.lost) {
 		player.points = bot.points = 0;
 		props.winner = null;
+		ball.lost = true;
 		ball.reset();
 	} else {
 		player.direction =
